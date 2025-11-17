@@ -27,11 +27,11 @@ def run_flask():
 # Start Flask in background
 Thread(target=run_flask, daemon=True).start()
 
-# Configuration - TERA TOKEN YAHAN HAI
-TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "8423614103:AAEifyco3Cv4Zg9H1veUeMhVDjHKz8USx-A")
+# FIXED: Direct token - no environment variable issue
+TELEGRAM_TOKEN = "8423614103:AAEifyco3Cv4Zg9H1veUeMhVDjHKz8USx-A"
 NUMBER_API_URL = "https://flipcartstore.serv00.net/PHONE/1.php?api_key=cyberGen123&mobile={}"
 
-# TERA TELEGRAM ID YAHAN DAL DIYA
+# TERA TELEGRAM ID
 ADMIN_IDS = [5928833993]  # ASHISH KA ID
 
 # Rate limiting storage
@@ -300,22 +300,26 @@ async def admin(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ==========================
 def main():
     """Start the bot"""
-    if not TELEGRAM_TOKEN:
-        logging.error("❌ TELEGRAM_TOKEN not found!")
-        return
+    print("🚀 Starting Ashish Spy Bot...")
+    print("📞 Token:", TELEGRAM_TOKEN)
+    print("👑 Admin ID:", ADMIN_IDS[0])
     
-    application = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
-    
-    application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler("num", num))
-    application.add_handler(CommandHandler("help", help))
-    application.add_handler(CommandHandler("stats", stats))
-    application.add_handler(CommandHandler("admin", admin))
-    
-    logging.info("🚀 Ashish Spy Bot Started Successfully!")
-    logging.info("📡 Bot is now running 24/7...")
-    logging.info("👑 Admin ID: 5928833993")
-    application.run_polling()
+    try:
+        application = ApplicationBuilder().token(TELEGRAM_TOKEN).build()
+        
+        application.add_handler(CommandHandler("start", start))
+        application.add_handler(CommandHandler("num", num))
+        application.add_handler(CommandHandler("help", help))
+        application.add_handler(CommandHandler("stats", stats))
+        application.add_handler(CommandHandler("admin", admin))
+        
+        print("✅ Bot started successfully!")
+        print("📡 Bot is now running 24/7...")
+        
+        application.run_polling()
+        
+    except Exception as e:
+        print(f"❌ Error starting bot: {e}")
 
 if __name__ == "__main__":
     main()
